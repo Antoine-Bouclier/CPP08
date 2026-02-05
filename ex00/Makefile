@@ -1,4 +1,4 @@
-NAME		=	template
+NAME		=	container
 CC			=	c++
 CFLAGS		=	-Wall -Wextra -Werror -std=c++98 -MMD -MP
 
