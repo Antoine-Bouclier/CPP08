@@ -3,16 +3,18 @@
 
 #include <iostream>
 
+template <typename T>
 class Span
 {
 private:
-	
+	T				*_array;
+	unsigned int	_size;
 public:
 	/* -- Constructors -- */
 	Span();
 	Span(unsigned int N);
 	Span(const Span &copy);
-	Span	&operator=(const Span &copy);
+	T	&operator=(const Span &copy);
 	~Span();
 
 	/* -- Member function -- */
