@@ -1,60 +1,91 @@
 #include "Span.hpp"
 
 /* -- Constructors -- */
-template <typename T>
-Span<T>::Span() : _array(NULL), _size(0)
+Span::Span() : _d(), _size(0), _smallest(0), _biggest(0)
 {
-}
-template <typename T>
-Span<T>::Span(unsigned int N) : _array(new T[N]), _size(N)
-{
-
 }
 
-template <typename T>
-Span<T>::Span(const Span &copy) : _array(new T[copy._size]), _size(copy._size)
+Span::Span(unsigned int N) : _d(), _size(N), _smallest(N), _biggest(N)
 {
-	for (unsigned int i = 0; i < this->_size; i++)
-	{
-		this->_array[i] = copy._array[i];
-	}
 }
-template <typename T>
-T	&Span<T>::operator=(const Span &copy)
+
+
+Span::Span(const Span &copy) : _d(copy._d), _size(copy._size), _smallest(copy._smallest), _biggest(copy._biggest)
+{
+}
+
+Span	&Span::operator=(const Span &copy)
 {
 	if (this != &copy)
 	{
+		this->_d = copy._d;
 		this->_size = copy._size;
-		delete[] this->_array;
-		this->_array = new T[this->_size];
-		for (unsigned int i = 0; i < this->_size; i++)
-		{
-			this->_array[i] = copy._array[i];
-		}
+		this->_smallest = copy._smallest;
+		this->_biggest = copy._biggest;
 	}
 	return (*this);
 }
 
-template <typename T>
-Span<T>::~Span()
+
+Span::~Span()
 {
 }
 
 /* -- Member function -- */
-template <typename T>
-void	Span<T>::addNumber(unsigned int number)
+void	Span::addNumber(int number)
 {
-
+	if (this->_d.size() >= this->_size)
+		throw NoSpaceException();
+	this->_d.push_back(number);
+	if (this->_d.size() == 1)
+	{
+		this->_smallest = number;
+		this->_biggest = number;
+	}
+	else
+	{
+		setBiggest(number);
+		setSmallest(number);
+	}
 }
 
-template <typename T>
-unsigned int	Span<T>::shortestSpan()
+void	Span::addNumbers(int first, int last)
 {
-
+	(void)first;
+	(void)last;
 }
 
-template <typename T>
-unsigned int	Span<T>::longestSpan()
+void	Span::setSmallest(int number)
 {
+	if (this->_smallest > number)
+		this->_smallest = number;
+}
 
+void	Span::setBiggest(int number)
+{
+	if (this->_biggest < number)
+		this->_biggest = number;
+}
+
+unsigned int	Span::shortestSpan()
+{
+	return (1);
+}
+
+unsigned int	Span::longestSpan()
+{
+	if (this->_d.size() < 2)
+		throw NoNumberStoredException();
+	return (this->_biggest - this->_smallest);
+}
+
+/* -- Exceptions -- */
+const char* Span::NoNumberStoredException::what() const throw()
+{
+	return ("No number are store.");
+}
+
+const char* Span::NoSpaceException::what() const throw()
+{
+	return ("No more space.");
 }
