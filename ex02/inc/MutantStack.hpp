@@ -26,6 +26,4 @@ class MutantStack : public std::stack<T>
 		}
 };
 
-#include "MutantStack.tpp"
-
 #endif
