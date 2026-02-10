@@ -2,15 +2,20 @@
 #define SPAN_HPP
 
 #include <iostream>
-#include <deque>
+#include <vector>
+#include <algorithm>
+#include <iterator>
 
 class Span
 {
 	private:
-		std::deque<int>		_d;
+		std::vector<int>		_d;
 		unsigned int		_size;
 		int					_smallest;
 		int					_biggest;
+
+		void	updateBounds(int number);
+		void	updateBounds(int smallest, int largest);
 	public:
 		/* -- Constructors -- */
 		Span();
@@ -21,13 +26,9 @@ class Span
 
 		/* -- Member function -- */
 		void			addNumber(int number);
-		void			addNumbers(int first, int last);
+		void			addNumbers(std::vector<int>::iterator first, std::vector<int>::iterator last);
 		unsigned int	shortestSpan();
 		unsigned int	longestSpan();
-
-		/* -- Setters -- */
-		void	setSmallest(int number);
-		void	setBiggest(int number);
 
 		/* -- Exceptions -- */
 		class NoSpaceException : public std::exception
@@ -41,6 +42,7 @@ class Span
 			public:
 				virtual const char *what() const throw();
 		};
+
 };
 
 #endif

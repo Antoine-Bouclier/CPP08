@@ -37,6 +37,26 @@ void	Span::addNumber(int number)
 	if (this->_d.size() >= this->_size)
 		throw NoSpaceException();
 	this->_d.push_back(number);
+	updateBounds(number);
+}
+
+void	Span::addNumbers(std::vector<int>::iterator first, std::vector<int>::iterator last)
+{
+	unsigned int	dist = std::distance(first, last);
+
+	if (this->_d.size() + dist > this->_size)
+		throw	NoSpaceException();
+	else
+	{
+		this->_d.insert(this->_d.end(), first, last);
+		std::vector<int>	tmp(this->_d);
+		std::sort(tmp.begin(), tmp.end());
+		updateBounds(tmp.front(), tmp.back());
+	}
+}
+
+void	Span::updateBounds(int number)
+{
 	if (this->_d.size() == 1)
 	{
 		this->_smallest = number;
@@ -44,32 +64,39 @@ void	Span::addNumber(int number)
 	}
 	else
 	{
-		setBiggest(number);
-		setSmallest(number);
+		this->_smallest = std::min(this->_smallest, number);
+		this->_biggest = std::max(this->_biggest, number);
 	}
 }
 
-void	Span::addNumbers(int first, int last)
+void	Span::updateBounds(int smallest, int longest)
 {
-	(void)first;
-	(void)last;
-}
-
-void	Span::setSmallest(int number)
-{
-	if (this->_smallest > number)
-		this->_smallest = number;
-}
-
-void	Span::setBiggest(int number)
-{
-	if (this->_biggest < number)
-		this->_biggest = number;
+	if (this->_d.size() == 1)
+	{
+		this->_smallest = smallest;
+		this->_biggest = longest;
+	}
+	else
+	{
+		this->_smallest = std::min(this->_smallest, smallest);
+		this->_biggest = std::max(this->_biggest, longest);
+	}
 }
 
 unsigned int	Span::shortestSpan()
 {
-	return (1);
+	if (this->_d.size() < 2)
+		throw NoNumberStoredException();
+	std::vector<int>	tmp(this->_d);
+	std::sort(tmp.begin(), tmp.end());
+	unsigned int	shortest = tmp[1] - tmp[0];
+	for (size_t i = 1; i < tmp.size(); ++i)
+	{
+		unsigned int	diff = static_cast<unsigned int>(tmp[i] - tmp[i - 1]);
+		if (diff < shortest)
+			shortest = diff;
+	}
+	return (shortest);
 }
 
 unsigned int	Span::longestSpan()
