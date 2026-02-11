@@ -1,11 +1,7 @@
 #include "Span.hpp"
 
 /* -- Constructors -- */
-Span::Span() : _d(), _size(0), _smallest(0), _biggest(0)
-{
-}
-
-Span::Span(unsigned int N) : _d(), _size(N), _smallest(N), _biggest(N)
+Span::Span(unsigned int N) : _size(N), _smallest(N), _biggest(N)
 {
 }
 

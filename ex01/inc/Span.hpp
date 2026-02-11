@@ -18,7 +18,6 @@ class Span
 		void	updateBounds(int smallest, int largest);
 	public:
 		/* -- Constructors -- */
-		Span();
 		Span(unsigned int N);
 		Span(const Span &copy);
 		Span	&operator=(const Span &copy);
